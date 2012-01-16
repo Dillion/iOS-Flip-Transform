@@ -1,11 +1,8 @@
-iOS-Flip-Transform
+####iOS-Flip-Transform
 
------
-
-Summary:
+####Summary:
 Animation component for the effect of flipping as in a news/clock ticker, or a page turn. 
 
------
 Structured around the idea of a data object (i.e. headline in news, number in a clock, page in a book) as an animation frame, comprised of multiple CALayers.
 
 Supports 3 interaction modes:
@@ -20,9 +17,8 @@ With dynamic text, either composited on background or on image
 
 Supports customizable parameters:
 Sensitivity, gravity, shadow, text positioning, alignment, font etc.
------
 
-Basic Usage:
+####Basic Usage:
 
 1. Create delegate object - 
 AnimationDelegate *animationDelegate = [[AnimationDelegate alloc] initWithSequenceType:kSequenceAuto directionType:kDirectionForward];
