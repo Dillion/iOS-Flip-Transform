@@ -1,11 +1,12 @@
 
 #import "AppDelegate.h"
-#import "RootViewController.h"
+#import "AnimationViewController.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize rootController;
+@synthesize navigationController;
+@synthesize animationViewController;
 
 - (void)dealloc
 {
@@ -18,12 +19,28 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
-    self.rootController = [[RootViewController alloc] init];
-    [self.window addSubview:rootController.view];
+    self.window.rootViewController = [[UIViewController alloc] init];
+    
+    UIButton *presentAnimationControllerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    presentAnimationControllerButton.frame = CGRectMake(40, 200, 240, 40);
+    [presentAnimationControllerButton setTitle:@"Present Animation Controller" forState:UIControlStateNormal];
+    [presentAnimationControllerButton addTarget:self action:@selector(presentAnimationController:) forControlEvents:UIControlEventTouchUpInside];
+    [self.window.rootViewController.view addSubview:presentAnimationControllerButton];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)presentAnimationController:(UIButton *)sender
+{
+    if (!animationViewController) {
+        self.animationViewController = [[AnimationViewController alloc] init];
+    }
+    if (!navigationController) {
+        self.navigationController = [[UINavigationController alloc] initWithRootViewController:animationViewController];
+    }
+    [self.window.rootViewController presentModalViewController:navigationController animated:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

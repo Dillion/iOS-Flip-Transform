@@ -30,11 +30,11 @@
  
  */
 
-#import "RootViewController.h"
+#import "AnimationViewController.h"
 #import "FlipView.h"
 #import "AnimationDelegate.h"
 
-@implementation RootViewController
+@implementation AnimationViewController
 
 @synthesize flipView, flipView2;
 @synthesize repeatButton, reverseButton, shadowButton;
@@ -87,6 +87,8 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onBackButtonPressed:)];
         
     // first flip view is a vertical flip on auto, like a news ticker
     animationDelegate = [[AnimationDelegate alloc] initWithSequenceType:kSequenceAuto
@@ -106,7 +108,10 @@
 //    }
     flipView.font = @"Helvetica Neue Bold";
     flipView.fontAlignment = @"center";
+    flipView.textOffset = CGPointMake(0.0, 2.0);
     flipView.textTruncationMode = kCATruncationEnd;
+    
+    flipView.sublayerCornerRadius = 6.0f;
     
     [flipView printText:@"LOOP" usingImage:nil backgroundColor:[UIColor colorWithRed:0.9 green:0 blue:0 alpha:1] textColor:[UIColor whiteColor]];
     [flipView printText:@"A" usingImage:nil backgroundColor:[UIColor colorWithRed:0.75 green:0 blue:0 alpha:1] textColor:[UIColor whiteColor]];
@@ -118,6 +123,7 @@
     
     self.repeatButton = [UIButton buttonWithType:UIButtonTypeCustom];
     repeatButton.frame = CGRectMake(60, 160, 90, 40);
+    repeatButton.selected = YES;
     [repeatButton setBackgroundImage:[UIImage imageNamed:@"repeat_normal"] forState:UIControlStateNormal];
     [repeatButton setBackgroundImage:[UIImage imageNamed:@"repeat_selected"] forState:UIControlStateHighlighted];
     [repeatButton setBackgroundImage:[UIImage imageNamed:@"repeat_selected"] forState:UIControlStateSelected];
@@ -143,11 +149,11 @@
     
     // screenshot the first flip view
     // second flip view is a horizontal flip on controlled, like a book
-    UIGraphicsBeginImageContext(CGSizeMake(320, 240));
+    UIGraphicsBeginImageContext(CGSizeMake(260, 150));
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
-    CGImageRef imageRef = CGImageCreateWithImageInRect([screenshot CGImage], CGRectMake(0, 40, 320, 200));
+    CGImageRef imageRef = CGImageCreateWithImageInRect([screenshot CGImage], CGRectMake(60, 40, 200, 110));
     
     UIGraphicsEndImageContext();
     
@@ -160,22 +166,22 @@
     
     self.flipView2 = [[FlipView alloc] initWithAnimationType:kAnimationFlipHorizontal
                                            animationDelegate:animationDelegate2
-                                                       frame:CGRectMake(0, 280, 320, 200)];
+                                                       frame:CGRectMake(60, 240, 200, 110)];
     animationDelegate2.transformView = flipView2;
     
     [self.view addSubview:flipView2];
     
     flipView2.textInset = CGPointMake(6.0, 0.0);
     
-    flipView2.font = @"Heiti J";
+    flipView2.font = @"AppleGothic";
     flipView2.textTruncationMode = kCATruncationEnd;
     
-    flipView2.fontSize = 24;
+    flipView2.fontSize = 18;
     flipView2.fontAlignment = @"left";
     flipView2.textOffset = CGPointMake(6.0, 16.0);
     [flipView2 printText:@"HORIZONTAL\nOR\nVERTICAL FLIPS" usingImage:nil backgroundColor:[UIColor redColor] textColor:[UIColor whiteColor]];
     
-    [flipView2 printText:@"BIDIRECTIONAL\nCUSTOMIZABLE MODES\nAUTO, TRIGGERED,\nCONTROLLED" usingImage:nil backgroundColor:[UIColor redColor] textColor:[UIColor whiteColor]];
+    [flipView2 printText:@"BIDIRECTIONAL\nCUSTOMIZABLE\nAUTO, TRIGGERED,\nCONTROLLED" usingImage:nil backgroundColor:[UIColor redColor] textColor:[UIColor whiteColor]];
     
     [flipView2 printText:@"ADJUSTABLE\nSENSITIVITY\nGRAVITY\nSHADOW" usingImage:nil backgroundColor:[UIColor redColor] textColor:[UIColor whiteColor]];
     
@@ -183,12 +189,12 @@
     flipView2.textOffset = CGPointMake(6.0, 28.0);
     [flipView2 printText:@"SCREENSHOT" usingImage:screenshotAfterCrop backgroundColor:nil textColor:[UIColor redColor]];
     
-    flipView2.fontSize = 40;
+    flipView2.fontSize = 24;
     flipView2.fontAlignment = @"left";
     flipView2.textOffset = CGPointMake(6.0, 16.0);
     [flipView2 printText:@"2.5D\nANIMATIONS" usingImage:nil backgroundColor:[UIColor redColor] textColor:[UIColor whiteColor]];
     
-    self.panRegion = [[UIView alloc] initWithFrame:CGRectMake(0, 280, 320, 200)];
+    self.panRegion = [[UIView alloc] initWithFrame:CGRectMake(60, 240, 200, 110)];
     [self.view addSubview:panRegion];
     
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
@@ -196,6 +202,28 @@
     panRecognizer.maximumNumberOfTouches = 1;
     panRecognizer.minimumNumberOfTouches = 1;
     [self.view addGestureRecognizer:panRecognizer];
+}
+
+- (void)onBackButtonPressed:(UIBarButtonItem *)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (animationDelegate.repeat) {
+        [animationDelegate startAnimation:kDirectionNone];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [animationDelegate resetTransformValues];
+    [NSObject cancelPreviousPerformRequestsWithTarget:animationDelegate];
 }
 
 - (void)toggleRepeat:(UIButton *)sender
@@ -277,7 +305,9 @@
             break;
         case UIGestureRecognizerStateEnded: {
             if (animationDelegate2.animationLock) {
-                [animationDelegate2 endState];
+                // provide inertia to panning gesture
+                float value = sqrtf(fabsf([recognizer velocityInView:self.view].x))/10.0f;
+                [animationDelegate2 endStateWithSpeed:value];
             }
         }
             break;

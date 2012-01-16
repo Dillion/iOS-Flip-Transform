@@ -66,7 +66,8 @@
 @property (nonatomic) CGPoint textOffset;
 // font size (different from UILabel font size property)
 @property (nonatomic) float fontSize;
-// font
+// provide a font from plist or use inbuilt fonts
+// if the rendering is very slow, change the font
 @property (nonatomic, assign) NSString *font;
 // font alignment
 @property (nonatomic, assign) NSString *fontAlignment;
@@ -85,6 +86,11 @@
        usingImage:(UIImage *)aImage
   backgroundColor:(UIColor *)aBackgroundColor
         textColor:(UIColor *)aTextColor;
+
+- (CALayer *)layerWithFrame:(CGRect)aFrame
+             contentGravity:(NSString *)aContentGravity
+               cornerRadius:(float)aRadius
+                doubleSided:(BOOL)aValue;
 
 - (void)rearrangeLayers:(DirectionType)aDirectionType :(int)step;
 

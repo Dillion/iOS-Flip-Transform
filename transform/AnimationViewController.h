@@ -35,7 +35,7 @@
 @class FlipView;
 @class AnimationDelegate;
 
-@interface RootViewController : UIViewController <UIGestureRecognizerDelegate> {
+@interface AnimationViewController : UIViewController <UIGestureRecognizerDelegate> {
     
     // use this to choreograph a sequence of animations that you want the user to step through
     int step;
@@ -43,6 +43,9 @@
     //the controller needs a reference to the delegate for control of the animation sequence
     AnimationDelegate *animationDelegate;
     AnimationDelegate *animationDelegate2;
+    
+    BOOL runWhenRestart;
+    
 }
 
 @property (nonatomic, retain) FlipView *flipView;
@@ -54,6 +57,8 @@
 
 @property (nonatomic, retain) UIView *panRegion;
 @property (nonatomic, retain) UIPanGestureRecognizer *panRecognizer;
+
+- (void)onBackButtonPressed:(UIBarButtonItem *)sender;
 
 - (void)panned:(UIPanGestureRecognizer *)recognizer;
 

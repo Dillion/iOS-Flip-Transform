@@ -38,6 +38,8 @@
     
 }
 
+@property (nonatomic) float sublayerCornerRadius;
+
 // use this method to add a static overlay layer on top of the animation layers
 // set the zPosition to a value higher than all the animation layers
 - (void)addOverlay;

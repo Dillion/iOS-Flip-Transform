@@ -71,8 +71,8 @@
         // default values
         nextDuration = 0.6;
         repeatDelay = 0.2;
-        sensitivity = 10;
-        gravity = 3;
+        sensitivity = 40;
+        gravity = 2;
         shadow = YES;
         
         if (sequenceType == kSequenceAuto) {
@@ -138,74 +138,7 @@
 
 - (void)animationCallback 
 {
-    AnimationFrame* currentFrame = [transformView.imageStackArray lastObject];
-    
-    int aX, aY, aZ;
-    
-    switch (transformView.animationType) {
-        case kAnimationFlipVertical:
-            aX = 1;
-            aY = 0;
-            aZ = 0;
-            break;
-        case kAnimationFlipHorizontal:
-            aX = 0;
-            aY = 1;
-            aZ = 0;
-            break;
-        default:break;
-    }
-
-    CALayer *targetLayer;
-    CALayer *targetShadowLayer, *targetShadowLayer2;
-    
-    if (currentDirection == kDirectionForward) {
-        targetLayer = [currentFrame.animationImages lastObject];
-    } else if (currentDirection == kDirectionBackward) {
-        targetLayer = [currentFrame.animationImages objectAtIndex:0];
-    }
-    
-    targetShadowLayer = [targetLayer.sublayers objectAtIndex:1];
-    targetShadowLayer2 = [targetLayer.sublayers objectAtIndex:3];
-    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DMakeRotation(0, aX, aY, aZ)] forKeyPath:@"transform"];
-    targetShadowLayer.opacity = 0.0f;
-    targetShadowLayer2.opacity = 0.0f;
-    
-    for (CALayer *layer in targetLayer.sublayers) {
-        [layer removeAllAnimations];
-    }
-    [targetLayer removeAllAnimations];
-    
-    targetLayer.zPosition = 0;
-    
-    CATransform3D aTransform = CATransform3DIdentity;
-    targetLayer.sublayerTransform = aTransform;
-    
-    [CATransaction commit];
-    
-    if (value != 0.0f) {
-        [transformView rearrangeLayers:currentDirection :3];
-    } else {
-        [transformView rearrangeLayers:currentDirection :2];
-    }
-    
-    if (controller && [controller respondsToSelector:@selector(animationDidFinish:)]) {
-        if (currentDirection == kDirectionForward && value == 10.0f) {
-            [controller animationDidFinish:1];
-        } else if (currentDirection == kDirectionBackward && value == 10.0f) {
-            [controller animationDidFinish:-1];
-        }
-    }
-    
-    animationState = 0;
-    animationLock = NO;
-    transitionImageBackup = nil;
-    value = 0.0f;
-    oldOpacityValue = 0.0f;
+    [self resetTransformValues];
     
     if (repeat && sequenceType == kSequenceAuto) {
         // the recommended way to queue CAAnimations by Apple is to offset the beginTime, 
@@ -216,67 +149,70 @@
         
 }
 
-- (void)endState 
+- (void)endStateWithSpeed:(float)aVelocity
 {
-    AnimationFrame* currentFrame = [transformView.imageStackArray lastObject];
-    CALayer *targetLayer;
-    
-    int aX, aY, aZ;
-    int rotationModifier;
-    
-    switch (transformView.animationType) {
-        case kAnimationFlipVertical:
-            aX = 1;
-            aY = 0;
-            aZ = 0;
-            rotationModifier = -1;
-            break;
-        case kAnimationFlipHorizontal:
-            aX = 0;
-            aY = 1;
-            aZ = 0;
-            rotationModifier = 1;
-            break;
-        default:break;
-    }
-    
-    float rotationAfterDirection;
-    
-    if (currentDirection == kDirectionForward) {
-        rotationAfterDirection = M_PI * rotationModifier;
-        targetLayer = [currentFrame.animationImages lastObject];
-    } else if (currentDirection == kDirectionBackward) {
-        rotationAfterDirection = -M_PI * rotationModifier;
-        targetLayer = [currentFrame.animationImages objectAtIndex:0];
-    }
-    CALayer *targetShadowLayer;
-    
-    [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DMakeRotation(rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
-    for (CALayer *layer in targetLayer.sublayers) {
-        [layer removeAllAnimations];
-    }
-    [targetLayer removeAllAnimations];
-    
     if (value == 0.0f) {
         
-        [self animationCallback];
+        [self resetTransformValues];
         
     } else if (value == 10.0f) {
         
-        [self animationCallback];
+        [self resetTransformValues];
         
     } else {
+        
+        AnimationFrame* currentFrame = [transformView.imageStackArray lastObject];
+        CALayer *targetLayer;
+        
+        int aX, aY, aZ;
+        int rotationModifier;
+        
+        switch (transformView.animationType) {
+            case kAnimationFlipVertical:
+                aX = 1;
+                aY = 0;
+                aZ = 0;
+                rotationModifier = -1;
+                break;
+            case kAnimationFlipHorizontal:
+                aX = 0;
+                aY = 1;
+                aZ = 0;
+                rotationModifier = 1;
+                break;
+            default:break;
+        }
+        
+        float rotationAfterDirection;
+        
+        if (currentDirection == kDirectionForward) {
+            rotationAfterDirection = M_PI * rotationModifier;
+            targetLayer = [currentFrame.animationImages lastObject];
+        } else if (currentDirection == kDirectionBackward) {
+            rotationAfterDirection = -M_PI * rotationModifier;
+            targetLayer = [currentFrame.animationImages objectAtIndex:0];
+        }
+        CALayer *targetShadowLayer;
+        
+        CATransform3D aTransform = CATransform3DIdentity;
+        float zDistance = 850;
+        aTransform.m34 = 1.0 / -zDistance;
+        [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DRotate(aTransform,rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
+        for (CALayer *layer in targetLayer.sublayers) {
+            [layer removeAllAnimations];
+        }
+        [targetLayer removeAllAnimations];
         
         if (gravity > 0) {
             
             animationState = 1;
             
-            if (value <= 5.0f) {
+            if (value+aVelocity <= 5.0f) {
                 targetShadowLayer = [targetLayer.sublayers objectAtIndex:1];
                 
                 [self setTransformProgress:rotationAfterDirection / 10.0 * value
                                           :0.0f
-                                          :1.0f/gravity
+                                          :1.0f/(gravity+aVelocity)
                                           :aX :aY :aZ
                                           :YES
                                           :NO
@@ -296,7 +232,7 @@
                 
                 [self setTransformProgress:rotationAfterDirection / 10.0 * value
                                           :rotationAfterDirection
-                                          :1.0f/gravity
+                                          :1.0f/(gravity+aVelocity)
                                           :aX :aY :aZ
                                           :YES
                                           :NO
@@ -318,8 +254,58 @@
 
 - (void)resetTransformValues
 {
-    oldOpacityValue = 0.0f;
+    AnimationFrame* currentFrame = [transformView.imageStackArray lastObject];
+    
+    CALayer *targetLayer;
+    CALayer *targetShadowLayer, *targetShadowLayer2;
+    
+    if (currentDirection == kDirectionForward) {
+        targetLayer = [currentFrame.animationImages lastObject];
+    } else if (currentDirection == kDirectionBackward) {
+        targetLayer = [currentFrame.animationImages objectAtIndex:0];
+    }
+    
+    targetShadowLayer = [targetLayer.sublayers objectAtIndex:1];
+    targetShadowLayer2 = [targetLayer.sublayers objectAtIndex:3];
+    
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DIdentity] forKeyPath:@"transform"];
+    targetShadowLayer.opacity = 0.0f;
+    targetShadowLayer2.opacity = 0.0f;
+    
+    for (CALayer *layer in targetLayer.sublayers) {
+        [layer removeAllAnimations];
+    }
+    [targetLayer removeAllAnimations];
+    
+    targetLayer.zPosition = 0;
+    
+    CATransform3D aTransform = CATransform3DIdentity;
+    targetLayer.sublayerTransform = aTransform;
+    
+    [CATransaction commit];
+    
+    if (value == 10.0f) {
+        [transformView rearrangeLayers:currentDirection :3];
+    } else {
+        [transformView rearrangeLayers:currentDirection :2];
+    }
+    
+    if (controller && [controller respondsToSelector:@selector(animationDidFinish:)]) {
+        if (currentDirection == kDirectionForward && value == 10.0f) {
+            [controller animationDidFinish:1];
+        } else if (currentDirection == kDirectionBackward && value == 10.0f) {
+            [controller animationDidFinish:-1];
+        }
+    }
+    
+    animationState = 0;
+    animationLock = NO;
+    transitionImageBackup = nil;
     value = 0.0f;
+    oldOpacityValue = 0.0f;
 }
 
 // set the progress of the animation
@@ -396,7 +382,7 @@
     float adjustedValue;
     float opacityValue;
     if (sequenceType == kSequenceControlled) {
-        adjustedValue = fabs(aValue * (sensitivity/100.0));
+        adjustedValue = fabs(aValue * (sensitivity/1000.0));
     } else {
         adjustedValue = fabs(aValue);
     }
@@ -476,7 +462,10 @@
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DMakeRotation(rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
+    CATransform3D aTransform = CATransform3DIdentity;
+    float zDistance = 850;
+    aTransform.m34 = 1.0 / -zDistance;
+    [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DRotate(aTransform, rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
     targetShadowLayer.opacity = oldOpacityValue;
     if (targetShadowLayer2) targetShadowLayer2.opacity = oldOpacityValue;
     for (CALayer *layer in targetLayer.sublayers) {
@@ -489,7 +478,7 @@
     if (adjustedValue != value) {
         
         CATransform3D aTransform = CATransform3DIdentity;
-        float zDistance = 850;
+        float zDistance = 400;
         aTransform.m34 = 1.0 / -zDistance;
         targetLayer.sublayerTransform = aTransform;
         
@@ -557,10 +546,14 @@
 {
     //NSLog(@"transform value %f, %f", startTransformValue, endTransformValue);
     
+    CATransform3D aTransform = CATransform3DIdentity;
+    float zDistance = 850;
+    aTransform.m34 = 1.0 / -zDistance;
+    
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
     anim.duration = duration;
-    anim.fromValue= [NSValue valueWithCATransform3D:CATransform3DMakeRotation(startTransformValue, aX, aY, aZ)];
-    anim.toValue=[NSValue valueWithCATransform3D:CATransform3DMakeRotation(endTransformValue, aX, aY, aZ)];
+    anim.fromValue= [NSValue valueWithCATransform3D:CATransform3DRotate(aTransform, startTransformValue, aX, aY, aZ)];
+    anim.toValue=[NSValue valueWithCATransform3D:CATransform3DRotate(aTransform, endTransformValue, aX, aY, aZ)];
     if (setDelegate) {
         anim.delegate = self;
     }

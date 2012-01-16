@@ -23,7 +23,7 @@
 		4DCA549914778FD5009B8741 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DCA549714778FD5009B8741 /* InfoPlist.strings */; };
 		4DCA549B14778FD5009B8741 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA549A14778FD5009B8741 /* main.m */; };
 		4DCA549F14778FD5009B8741 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA549E14778FD5009B8741 /* AppDelegate.m */; };
-		4DCA54A714779079009B8741 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA54A614779079009B8741 /* RootViewController.m */; };
+		4DCA54A714779079009B8741 /* AnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA54A614779079009B8741 /* AnimationViewController.m */; };
 		4DCA54AC14779189009B8741 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCA54AB14779189009B8741 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,8 +52,8 @@
 		4DCA549C14778FD5009B8741 /* transform-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "transform-Prefix.pch"; sourceTree = "<group>"; };
 		4DCA549D14778FD5009B8741 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4DCA549E14778FD5009B8741 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		4DCA54A514779079009B8741 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		4DCA54A614779079009B8741 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		4DCA54A514779079009B8741 /* AnimationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationViewController.h; sourceTree = "<group>"; };
+		4DCA54A614779079009B8741 /* AnimationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationViewController.m; sourceTree = "<group>"; };
 		4DCA54AB14779189009B8741 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -119,8 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				4DC1936214BA092300EC5EE7 /* framework */,
-				4DCA54A514779079009B8741 /* RootViewController.h */,
-				4DCA54A614779079009B8741 /* RootViewController.m */,
+				4DCA54A514779079009B8741 /* AnimationViewController.h */,
+				4DCA54A614779079009B8741 /* AnimationViewController.m */,
 				4DCA549D14778FD5009B8741 /* AppDelegate.h */,
 				4DCA549E14778FD5009B8741 /* AppDelegate.m */,
 				4DCA549514778FD5009B8741 /* Supporting Files */,
@@ -222,7 +222,7 @@
 			files = (
 				4DCA549B14778FD5009B8741 /* main.m in Sources */,
 				4DCA549F14778FD5009B8741 /* AppDelegate.m in Sources */,
-				4DCA54A714779079009B8741 /* RootViewController.m in Sources */,
+				4DCA54A714779079009B8741 /* AnimationViewController.m in Sources */,
 				4DC1936B14BA092300EC5EE7 /* AnimationDelegate.m in Sources */,
 				4DC1936C14BA092300EC5EE7 /* AnimationFrame.m in Sources */,
 				4DC1936D14BA092300EC5EE7 /* FlipView.m in Sources */,

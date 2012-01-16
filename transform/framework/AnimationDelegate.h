@@ -104,7 +104,7 @@ typedef enum {
 
 // for notifying animation delegate that user input has ended in kSequenceControlled
 // and it should move to the nearest resting state
-- (void)endState;
+- (void)endStateWithSpeed:(float)aVelocity;
 
 // reset transform and opacity values
 - (void)resetTransformValues;

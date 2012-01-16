@@ -88,25 +88,28 @@
   backgroundColor:(UIColor *)aBackgroundColor
         textColor:(UIColor *)aTextColor {
     
-    // renderInContext requires a new layer
-    CALayer *backingLayer = [CALayer layer];
-    
-    if (aImage) {
-        [backingLayer setContents:(id)aImage.CGImage];
-    }
-    
-    if (aBackgroundColor) {
-        backingLayer.backgroundColor = aBackgroundColor.CGColor;
-    }
-    
-    backingLayer.frame = CGRectMake(0, 0, templateWidth, templateHeight);
-    
-    // Composite text onto image layer by rendering a text layer in a new graphics context
-    // For dynamic resizing need to compute the bounds based on font ascender and descender, and set the autoresizing mask
-    CATextLayer *label = nil;
-    
+    // render in context only if there is text
     if (tickerString) {
-        label = [[CATextLayer alloc] init];
+        
+        CALayer *backingLayer = [CALayer layer];
+        // set opaque to improve rendering speed
+        backingLayer.opaque = YES;
+        
+        if (aImage) {
+            [backingLayer setContents:(id)aImage.CGImage];
+        }
+        
+        if (aBackgroundColor) {
+            backingLayer.backgroundColor = aBackgroundColor.CGColor;
+        }
+        
+        backingLayer.frame = CGRectMake(0, 0, templateWidth, templateHeight);
+        
+        // Composite text onto image layer by rendering a text layer in a new graphics context
+        // For dynamic resizing need to compute the bounds based on font ascender and descender, and set the autoresizing mask
+        CATextLayer *label = [CATextLayer layer];
+        // for crisp text, set text layer to screen resolution
+        label.contentsScale = [[UIScreen mainScreen] scale];
         label.string = tickerString;
         label.font = font;
         label.fontSize = fontSize;
@@ -122,18 +125,18 @@
         label.position = CGPointMake(backingLayer.position.x + textOffset.x, backingLayer.position.y + textOffset.y);
         
         [backingLayer addSublayer:label];
-    }
-    
-    UIGraphicsBeginImageContext(backingLayer.frame.size);
-    
-    [backingLayer renderInContext:UIGraphicsGetCurrentContext()];
-    templateImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    if (label) {
+        
+        UIGraphicsBeginImageContext(backingLayer.frame.size);
+        
+        [backingLayer renderInContext:UIGraphicsGetCurrentContext()];
+        templateImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        UIGraphicsEndImageContext();
+        
         [label removeFromSuperlayer];
-        [label release];
+        
+    } else {
+        templateImage = aImage;
     }
 
     if (templateImage) {
@@ -141,6 +144,24 @@
     }
     
     return NO;
+}
+
+- (CALayer *)layerWithFrame:(CGRect)aFrame
+             contentGravity:(NSString *)aContentGravity
+               cornerRadius:(float)aRadius
+                doubleSided:(BOOL)aValue
+{
+    CALayer *layer = [CALayer layer];
+    layer.frame = aFrame;
+    if (aContentGravity) {
+        layer.contentsGravity = aContentGravity;
+    }
+    layer.cornerRadius = aRadius;
+    layer.doubleSided = NO;
+    layer.masksToBounds = YES;
+    layer.doubleSided = NO;
+    
+    return layer;
 }
 
 // Pop the last set of images and push back onto the stack, to prepare for the next animation sequence

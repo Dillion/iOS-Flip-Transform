@@ -1,11 +1,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class RootViewController;
+@class AnimationViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong) RootViewController *rootController;
+
+@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) AnimationViewController *animationViewController;
+
+- (void)presentAnimationController:(UIButton *)sender;
 
 @end

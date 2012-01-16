@@ -37,6 +37,8 @@
 
 @implementation FlipView
 
+@synthesize sublayerCornerRadius;
+
 - (id)initWithAnimationType:(AnimationType)aType
           animationDelegate:(AnimationDelegate *)aDelegate
                       frame:(CGRect)aFrame 
@@ -45,6 +47,8 @@
     if ((self = [super initWithAnimationType:aType
                            animationDelegate:aDelegate
                                        frame:aFrame])) {
+        
+        sublayerCornerRadius = 0.0f;
         
         switch (aType) {
             case kAnimationFlipVertical:
@@ -93,29 +97,19 @@
                                               templateWidth, 
                                               templateHeight/2);
                 
-                CALayer *backLayer = [CALayer layer];
-                backLayer.frame = layerRect;
-                backLayer.contents = kCAGravityTop;
-                backLayer.doubleSided = NO;
+                CALayer *backLayer = [self layerWithFrame:layerRect contentGravity:kCAGravityTop cornerRadius:sublayerCornerRadius doubleSided:NO];
                 [flipLayer addSublayer:backLayer];
                 
-                CALayer *shadowLayer = [CALayer layer];
-                shadowLayer.frame = layerRect;
-                shadowLayer.doubleSided = NO;
+                CALayer *shadowLayer = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer.opacity = 0.0f;
                 [flipLayer addSublayer:shadowLayer];
                 
-                CALayer *frontLayer = [CALayer layer];
-                frontLayer.frame = layerRect;
-                frontLayer.contentsGravity = kCAGravityBottom;
-                frontLayer.doubleSided = NO;
+                CALayer *frontLayer = [self layerWithFrame:layerRect contentGravity:kCAGravityBottom cornerRadius:sublayerCornerRadius doubleSided:NO];
                 frontLayer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0, 0);
                 [flipLayer addSublayer:frontLayer];
                 
-                CALayer *shadowLayer2 = [CALayer layer];
-                shadowLayer2.frame = layerRect;
-                shadowLayer2.doubleSided = NO;
+                CALayer *shadowLayer2 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer2.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer2.opacity = 0.0f;
                 shadowLayer2.transform = CATransform3DMakeRotation(M_PI, 1.0, 0, 0);
@@ -128,31 +122,19 @@
                                               templateHeight/2);
                 flipLayer2.anchorPoint = CGPointMake(0.5, 0.0);
                 
-                CALayer *backLayer2 = [CALayer layer];
-                backLayer2.frame = layerRect;
-                backLayer2.contents = kCAGravityTop;
-                backLayer2.doubleSided = NO;
-                backLayer2.masksToBounds = YES;
+                CALayer *backLayer2 = [self layerWithFrame:layerRect contentGravity:kCAGravityTop cornerRadius:sublayerCornerRadius doubleSided:NO];
                 [flipLayer2 addSublayer:backLayer2];
                 
-                CALayer *shadowLayer3 = [CALayer layer];
-                shadowLayer3.frame = layerRect;
-                shadowLayer3.doubleSided = NO;
+                CALayer *shadowLayer3 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer3.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer3.opacity = 0.0f;
                 [flipLayer2 addSublayer:shadowLayer3];
                 
-                CALayer *frontLayer2 = [CALayer layer];
-                frontLayer2.frame = layerRect;
-                frontLayer2.contentsGravity = kCAGravityBottom;
-                frontLayer2.doubleSided = NO;
-                frontLayer2.masksToBounds = YES;
+                CALayer *frontLayer2 = [self layerWithFrame:layerRect contentGravity:kCAGravityBottom cornerRadius:sublayerCornerRadius doubleSided:NO];
                 frontLayer2.transform = CATransform3DMakeRotation(M_PI, 1.0, 0, 0);
                 [flipLayer2 addSublayer:frontLayer2];
                 
-                CALayer *shadowLayer4 = [CALayer layer];
-                shadowLayer4.frame = layerRect;
-                shadowLayer4.doubleSided = NO;
+                CALayer *shadowLayer4 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer4.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer4.opacity = 0.0f;
                 shadowLayer4.transform = CATransform3DMakeRotation(M_PI, 1.0, 0, 0);
@@ -193,29 +175,19 @@
                                               templateWidth/2, 
                                               templateHeight);
                 
-                CALayer *backLayer = [CALayer layer];
-                backLayer.frame = layerRect;
-                backLayer.contentsGravity = kCAGravityLeft;
-                backLayer.doubleSided = NO;
+                CALayer *backLayer = [self layerWithFrame:layerRect contentGravity:kCAGravityLeft cornerRadius:sublayerCornerRadius doubleSided:NO];
                 [flipLayer addSublayer:backLayer];
                 
-                CALayer *shadowLayer = [CALayer layer];
-                shadowLayer.frame = layerRect;
-                shadowLayer.doubleSided = NO;
+                CALayer *shadowLayer = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer.opacity = 0.0f;
                 [flipLayer addSublayer:shadowLayer];
                 
-                CALayer *frontLayer = [CALayer layer];
-                frontLayer.frame = layerRect;
-                frontLayer.contentsGravity = kCAGravityRight;
-                frontLayer.doubleSided = NO;
+                CALayer *frontLayer = [self layerWithFrame:layerRect contentGravity:kCAGravityRight cornerRadius:sublayerCornerRadius doubleSided:NO];
                 frontLayer.transform = CATransform3DMakeRotation(M_PI, 0, 1.0, 0);
                 [flipLayer addSublayer:frontLayer];
                 
-                CALayer *shadowLayer2 = [CALayer layer];
-                shadowLayer2.frame = layerRect;
-                shadowLayer2.doubleSided = NO;
+                CALayer *shadowLayer2 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer2.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer2.opacity = 0.0f;
                 shadowLayer2.transform = CATransform3DMakeRotation(M_PI, 0, 1.0, 0);
@@ -228,29 +200,19 @@
                                               templateHeight);
                 flipLayer2.anchorPoint = CGPointMake(0.0, 0.5);
                 
-                CALayer *backLayer2 = [CALayer layer];
-                backLayer2.frame = layerRect;
-                backLayer2.contentsGravity = kCAGravityLeft;
-                backLayer2.doubleSided = NO;
+                CALayer *backLayer2 = [self layerWithFrame:layerRect contentGravity:kCAGravityLeft cornerRadius:sublayerCornerRadius doubleSided:NO];
                 [flipLayer2 addSublayer:backLayer2];
                 
-                CALayer *shadowLayer3 = [CALayer layer];
-                shadowLayer3.frame = layerRect;
-                shadowLayer3.doubleSided = NO;
+                CALayer *shadowLayer3 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer3.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer3.opacity = 0.0f;
                 [flipLayer2 addSublayer:shadowLayer3];
                 
-                CALayer *frontLayer2 = [CALayer layer];
-                frontLayer2.frame = layerRect;
-                frontLayer2.contentsGravity = kCAGravityRight;
-                frontLayer2.doubleSided = NO;
+                CALayer *frontLayer2 = [self layerWithFrame:layerRect contentGravity:kCAGravityRight cornerRadius:sublayerCornerRadius doubleSided:NO];
                 frontLayer2.transform = CATransform3DMakeRotation(M_PI, 0, 1.0, 0);
                 [flipLayer2 addSublayer:frontLayer2];
                 
-                CALayer *shadowLayer4 = [CALayer layer];
-                shadowLayer4.frame = layerRect;
-                shadowLayer4.doubleSided = NO;
+                CALayer *shadowLayer4 = [self layerWithFrame:layerRect contentGravity:nil cornerRadius:sublayerCornerRadius doubleSided:YES];
                 shadowLayer4.backgroundColor = [UIColor blackColor].CGColor;
                 shadowLayer4.opacity = 0.0f;
                 shadowLayer4.transform = CATransform3DMakeRotation(M_PI, 0, 1.0, 0);
