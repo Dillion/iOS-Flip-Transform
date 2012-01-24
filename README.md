@@ -1,53 +1,36 @@
-##iOS-Flip-Transform  
+####iOS-Flip-Transform
 
+####Summary:
 Animation component for the effect of flipping as in a news/clock ticker, or a page turn. 
 
-Structured around the idea of a data object (i.e. headline in news, number in a clock, page in a book) as an animation frame, comprised of multiple CALayers.  
+Structured around the idea of a data object (i.e. headline in news, number in a clock, page in a book) as an animation frame, comprised of multiple CALayers.
 
-Supports 3 interaction modes:  
+Supports 3 interaction modes:
+Triggered - as in a tap to flip
+Auto - as in a revolving flip that loops through data
+Controlled - as in a pan gesture that moves the flip layer according to touch
 
- - __Triggered__: as in a tap to flip  
- - __Auto__: as in a revolving flip that loops through data  
- - __Controlled__: as in a pan gesture that moves the flip layer according to touch  
+Supports different types of content:
+Blank, with background color
+With image (whether from file or screenshot)
+With dynamic text, either composited on background or on image
 
-Supports different types of content:  
+Supports customizable parameters:
+Sensitivity, gravity, shadow, text positioning, alignment, font etc.
 
- - _Blank_, with background color  
- - _With image_, whether from file or screenshot  
- - _With dynamic text_, either composited on background or on image  
+####Basic Usage:
 
-###Basic Usage
+1. Create delegate object - 
+AnimationDelegate *animationDelegate = [[AnimationDelegate alloc] initWithSequenceType:kSequenceAuto directionType:kDirectionForward];
 
- 1. Create delegate object -  
-`AnimationDelegate *animationDelegate = [[AnimationDelegate alloc] initWithSequenceType: directionType:];`  
+2. Create flip view and assign it to animation delegate - 
+FlipView *flipView = [[FlipView alloc] initWithAnimationType:kAnimationFlipVertical
+                                          animationDelegate:animationDelegate
+                                                      frame:CGRectMake(60, 95, 200, 50)];
+animationDelegate.transformView = flipView;
 
- 2. Create flip view (either vertical or horizontal flip animation type) and assign it to animation delegate -  
-`FlipView *flipView = [[FlipView alloc] initWithAnimationType: animationDelegate: frame:];`  
-`animationDelegate.transformView = flipView;`  
+3. Add flip view as subview and customize properties
 
- 3. Add flip view as subview and customize properties (refer below for configurable list)  
+4. Call [flipView printText: usingImage: backgroundColor: textColor:] to draw each frame (minimum of 2)
 
- 4. Call `[flipView printText: usingImage: backgroundColor: textColor:]` to draw each frame (minimum of 2)  
-
- 5. Call `[animationDelegate startAnimation:]` to start the animation. For using buttons or pan gesture, look at the animation controller example  
-
-###Configurable Properties
-
-####Animation Delegate
-
- - __repeatDelay__: Length of time to the next flip after the current flip completes (only for _auto interaction mode_)
- - __shadow__: Whether or not to display shadow
- - __repeat__: Whether or not to loop through animation frames (only for _auto interaction mode_)
- - __sensitivity__: Positive modifier for input to animation response. Higher the sensitivity, greater the response. (only for _controlled interaction mode_)
- - __gravity__: Positive modifier for speed of movement to nearest resting state after input is removed. Higher the gravity, faster the speed. (only for _controlled interaction mode_)
- - __nextDuration__: duration of the next flip animation
-
-####FlipView
-
- - __textInset__: inset of text relative to the flip view, like border margin
- - __textOffset__: positioning of text relative to top left of the flip view
- - __fontSize__: font size
- - __font__: font string, can be custom or inbuilt, defaults to Helvetica
- - __fontAlignment__: left, center or right alignment
- - __textTruncationMode__: none, start, middle or end truncation
- - __sublayerCornerRadius__: corner radius to apply to each sub panel of the flip view
+5. Call [animationDelegate startAnimation:] to start the animation. For using buttons or pan gesture, look at the animation controller example
