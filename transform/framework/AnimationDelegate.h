@@ -91,7 +91,7 @@ typedef enum {
 /* properties for kSequenceTriggered */
 
 /* properties for kSequenceControlled */
-// positive modifier for input to animation response. Higher the sensitivity, greater the response. 10 is an average value
+// positive modifier for input to animation response. Higher the sensitivity, greater the response. 40 is an average value
 @property (nonatomic) int sensitivity;
 // positive modifier for speed of movement after input is removed, you can think of it as gravity applied to the frame that moves layers to a resting position. Higher the gravity, faster the movement. 3 is an average value
 @property (nonatomic) int gravity;
