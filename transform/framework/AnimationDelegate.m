@@ -285,13 +285,13 @@
     CATransform3D aTransform = CATransform3DIdentity;
     targetLayer.sublayerTransform = aTransform;
     
-    [CATransaction commit];
-    
     if (value == 10.0f) {
         [transformView rearrangeLayers:currentDirection :3];
     } else {
         [transformView rearrangeLayers:currentDirection :2];
     }
+    
+    [CATransaction commit];
     
     if (controller && [controller respondsToSelector:@selector(animationDidFinish:)]) {
         if (currentDirection == kDirectionForward && value == 10.0f) {
