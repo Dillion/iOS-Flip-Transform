@@ -31,6 +31,8 @@ Supports different types of content:
 
  5. Call `[animationDelegate startAnimation:]` to start the animation. For using buttons or pan gesture, look at the animation controller example  
 
+Note: To remove jagged edges during flipping, set __Renders with edge antialiasing__ in the project plist to YES. This may decrease performance.  
+
 ###Configurable Properties
 
 ####Animation Delegate
@@ -40,6 +42,7 @@ Supports different types of content:
  - __repeat__: Whether or not to loop through animation frames (only for _auto interaction mode_)
  - __sensitivity__: Positive modifier for input to animation response. Higher the sensitivity, greater the response. (only for _controlled interaction mode_)
  - __gravity__: Positive modifier for speed of movement to nearest resting state after input is removed. Higher the gravity, faster the speed. (only for _controlled interaction mode_)
+ - __perspectiveDepth__: Positive value for adjusting the perspective. Lower the value, greater the illusion of depth.
  - __nextDuration__: duration of the next flip animation
 
 ####FlipView

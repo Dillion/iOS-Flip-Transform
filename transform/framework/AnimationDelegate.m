@@ -54,6 +54,7 @@
 @synthesize repeat;
 @synthesize sensitivity;
 @synthesize gravity;
+@synthesize perspectiveDepth;
 
 - (id)initWithSequenceType:(SequenceType)aType
              directionType:(DirectionType)aDirection 
@@ -73,6 +74,7 @@
         repeatDelay = 0.2;
         sensitivity = 40;
         gravity = 2;
+        perspectiveDepth = 500;
         shadow = YES;
         
         if (sequenceType == kSequenceAuto) {
@@ -195,8 +197,7 @@
         CALayer *targetShadowLayer;
         
         CATransform3D aTransform = CATransform3DIdentity;
-        float zDistance = 850;
-        aTransform.m34 = 1.0 / -zDistance;
+        aTransform.m34 = 1.0 / -perspectiveDepth;
         [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DRotate(aTransform,rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
         for (CALayer *layer in targetLayer.sublayers) {
             [layer removeAllAnimations];
@@ -463,8 +464,7 @@
     [CATransaction setDisableActions:YES];
     
     CATransform3D aTransform = CATransform3DIdentity;
-    float zDistance = 850;
-    aTransform.m34 = 1.0 / -zDistance;
+    aTransform.m34 = 1.0 / -perspectiveDepth;
     [targetLayer setValue:[NSValue valueWithCATransform3D:CATransform3DRotate(aTransform, rotationAfterDirection/10.0 * value, aX, aY, aZ)] forKeyPath:@"transform"];
     targetShadowLayer.opacity = oldOpacityValue;
     if (targetShadowLayer2) targetShadowLayer2.opacity = oldOpacityValue;
@@ -478,8 +478,7 @@
     if (adjustedValue != value) {
         
         CATransform3D aTransform = CATransform3DIdentity;
-        float zDistance = 400;
-        aTransform.m34 = 1.0 / -zDistance;
+        aTransform.m34 = 1.0 / -perspectiveDepth;
         targetLayer.sublayerTransform = aTransform;
         
         if (transitionImageBackup == nil) { //transition has begun, copy the layer content for the reverse layer
@@ -547,8 +546,7 @@
     //NSLog(@"transform value %f, %f", startTransformValue, endTransformValue);
     
     CATransform3D aTransform = CATransform3DIdentity;
-    float zDistance = 850;
-    aTransform.m34 = 1.0 / -zDistance;
+    aTransform.m34 = 1.0 / -perspectiveDepth;
     
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
     anim.duration = duration;

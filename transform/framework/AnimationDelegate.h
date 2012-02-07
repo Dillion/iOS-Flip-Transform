@@ -82,6 +82,8 @@ typedef enum {
 @property (nonatomic) BOOL animationLock;
 // shadow layers are created during frame initialization, this setting determines whether or not to animate them
 @property (nonatomic) BOOL shadow;
+// positive value for adjusting the perspective. Lower the value, greater the illusion of depth. Generally ranges between 200 to 2000
+@property (nonatomic) int perspectiveDepth;
 
 /* properties for kSequenceAuto */
 // repeatDelay is the length of time to the next animation in kSequenceAuto after the cleanup from the last animation completes

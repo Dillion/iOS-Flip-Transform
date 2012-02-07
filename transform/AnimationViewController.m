@@ -94,6 +94,7 @@
     animationDelegate = [[AnimationDelegate alloc] initWithSequenceType:kSequenceAuto
                                                           directionType:kDirectionForward];
     animationDelegate.controller = self;
+    animationDelegate.perspectiveDepth = 200;
     
     self.flipView = [[FlipView alloc] initWithAnimationType:kAnimationFlipVertical
                                           animationDelegate:animationDelegate
@@ -163,6 +164,7 @@
     animationDelegate2 = [[AnimationDelegate alloc] initWithSequenceType:kSequenceControlled
                                                            directionType:kDirectionForward];
     animationDelegate2.controller = self;
+    animationDelegate2.perspectiveDepth = 2000;
     
     self.flipView2 = [[FlipView alloc] initWithAnimationType:kAnimationFlipHorizontal
                                            animationDelegate:animationDelegate2
