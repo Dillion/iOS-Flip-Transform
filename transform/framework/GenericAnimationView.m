@@ -92,6 +92,7 @@
     if (tickerString) {
         
         CALayer *backingLayer = [CALayer layer];
+        backingLayer.contentsGravity = kCAGravityResizeAspect;
         // set opaque to improve rendering speed
         backingLayer.opaque = YES;
         
@@ -110,6 +111,7 @@
         CATextLayer *label = [CATextLayer layer];
         // for crisp text, set text layer to screen resolution
         label.contentsScale = [[UIScreen mainScreen] scale];
+        label.contentsGravity = kCAGravityResizeAspect;
         label.string = tickerString;
         label.font = font;
         label.fontSize = fontSize;
@@ -126,9 +128,12 @@
         
         [backingLayer addSublayer:label];
         
-        UIGraphicsBeginImageContext(backingLayer.frame.size);
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize size = CGSizeMake(backingLayer.frame.size.width*scale, backingLayer.frame.size.height*scale);
+        UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        [backingLayer renderInContext:context];
         
-        [backingLayer renderInContext:UIGraphicsGetCurrentContext()];
         templateImage = UIGraphicsGetImageFromCurrentImageContext();
         
         UIGraphicsEndImageContext();
@@ -160,6 +165,7 @@
     layer.doubleSided = NO;
     layer.masksToBounds = YES;
     layer.doubleSided = NO;
+    layer.contentsGravity = kCAGravityResizeAspect;
     
     return layer;
 }
