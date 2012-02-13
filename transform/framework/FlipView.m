@@ -75,6 +75,7 @@
   backgroundColor:(UIColor *)aBackgroundColor
         textColor:(UIColor *)aTextColor 
 {
+    CGFloat scale = [[UIScreen mainScreen] scale];
     
     if ([super printText:tickerString usingImage:aImage backgroundColor:aBackgroundColor textColor:aTextColor]) {
         switch (self.animationType) {
@@ -140,9 +141,9 @@
                 shadowLayer4.transform = CATransform3DMakeRotation(M_PI, 1.0, 0, 0);
                 [flipLayer2 addSublayer:shadowLayer4];
                 
-                CGImageRef imageRef = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, 0, templateWidth, templateHeight/2));
+                CGImageRef imageRef = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, 0, templateWidth*scale, templateHeight*scale/2));
                 
-                CGImageRef imageRef2 = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, templateHeight/2, templateWidth, templateHeight/2));
+                CGImageRef imageRef2 = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, templateHeight*scale/2, templateWidth*scale, templateHeight*scale/2));
                 
                 [backLayer setContents:(id)imageRef];
                 [backLayer2 setContents:(id)imageRef2];
@@ -218,9 +219,9 @@
                 shadowLayer4.transform = CATransform3DMakeRotation(M_PI, 0, 1.0, 0);
                 [flipLayer2 addSublayer:shadowLayer4];
                 
-                CGImageRef imageRef = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(templateWidth/2, 0, templateWidth/2, templateHeight));
+                CGImageRef imageRef = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(templateWidth*scale/2, 0, templateWidth*scale/2, templateHeight*scale));
                 
-                CGImageRef imageRef2 = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, 0, templateWidth/2, templateHeight));
+                CGImageRef imageRef2 = CGImageCreateWithImageInRect([templateImage CGImage], CGRectMake(0, 0, templateWidth*scale/2, templateHeight*scale));
                 
                 [backLayer setContents:(id)imageRef2];
                 [backLayer2 setContents:(id)imageRef];
