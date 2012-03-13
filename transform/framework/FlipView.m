@@ -40,12 +40,10 @@
 @synthesize sublayerCornerRadius;
 
 - (id)initWithAnimationType:(AnimationType)aType
-          animationDelegate:(AnimationDelegate *)aDelegate
                       frame:(CGRect)aFrame 
 {
     
     if ((self = [super initWithAnimationType:aType
-                           animationDelegate:aDelegate
                                        frame:aFrame])) {
         
         sublayerCornerRadius = 0.0f;
@@ -156,9 +154,6 @@
                 
                 [self.imageStackArray addObject:newFrame];
                 
-                [flipLayer setDelegate:self.animationDelegate];
-                [flipLayer2 setDelegate:self.animationDelegate];
-                
                 return YES;
             }
                 break;
@@ -233,9 +228,6 @@
                 [newFrame addLayers:flipLayer2, flipLayer, nil];
                 
                 [self.imageStackArray addObject:newFrame];
-                
-                [flipLayer setDelegate:self.animationDelegate];
-                [flipLayer2 setDelegate:self.animationDelegate];
                 
                 return YES;
             }

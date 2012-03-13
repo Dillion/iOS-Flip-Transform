@@ -41,7 +41,6 @@
 @implementation GenericAnimationView
 
 @synthesize imageStackArray;
-@synthesize animationDelegate;
 @synthesize textInset;
 @synthesize textOffset;
 @synthesize fontSize;
@@ -51,7 +50,6 @@
 @synthesize animationType;
 
 - (id)initWithAnimationType:(AnimationType)aType
-          animationDelegate:(AnimationDelegate *)aDelegate
                      frame:(CGRect)aFrame
 {
     self = [super init];
@@ -64,8 +62,6 @@
         textInset = CGPointZero;
         
         self.imageStackArray = [NSMutableArray array];
-        
-        animationDelegate = aDelegate;
         
         templateWidth = aFrame.size.width;
         templateHeight = aFrame.size.height;

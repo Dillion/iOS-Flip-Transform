@@ -3,9 +3,7 @@
  
  File: AnimationDelegate.h
  Abstract: Animation Delegate is the helper to handle callbacks
- from transform operations. The delegate has to be outside the
- view hierarchy because a UIView can have only 1 delegating 
- CALayer, which is the one created by default. The animation 
+ from transform operations. The animation 
  delegate should have knowledge of how and what kind of transform
  should be applied to current animation frame, based on the type
  of animation and various user settings.

@@ -58,8 +58,6 @@
 // Image data is grouped into Animation Frames, each frame contains the set of images displayed in between sequences
 @property (nonatomic, retain) NSMutableArray *imageStackArray;
 
-@property (nonatomic, assign) AnimationDelegate *animationDelegate;
-
 // set inset to restrict text frame size
 @property (nonatomic) CGPoint textInset;
 // set offset from position to align text
@@ -78,7 +76,6 @@
 @property (nonatomic) AnimationType animationType;
 
 - (id)initWithAnimationType:(AnimationType)aType
-          animationDelegate:(AnimationDelegate *)aDelegate
                       frame:(CGRect)aFrame;
 
 // method to override for subclasses

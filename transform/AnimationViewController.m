@@ -97,7 +97,6 @@
     animationDelegate.perspectiveDepth = 200;
     
     self.flipView = [[FlipView alloc] initWithAnimationType:kAnimationFlipVertical
-                                          animationDelegate:animationDelegate
                                                       frame:CGRectMake(60, 95, 200, 50)];
     animationDelegate.transformView = flipView;
     
@@ -167,7 +166,6 @@
     animationDelegate2.perspectiveDepth = 2000;
     
     self.flipView2 = [[FlipView alloc] initWithAnimationType:kAnimationFlipHorizontal
-                                           animationDelegate:animationDelegate2
                                                        frame:CGRectMake(60, 240, 200, 110)];
     animationDelegate2.transformView = flipView2;
     
