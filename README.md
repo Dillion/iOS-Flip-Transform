@@ -1,6 +1,6 @@
-##iOS-Flip-Transform  
+## iOS-Flip-Transform  
 
-###Summary
+### Summary
 Animation component for the effect of flipping as in a news/clock ticker, or a page turn. 
 
 Structured around the idea of a data object (i.e. headline in news, number in a clock, page in a book) as an animation frame, comprised of multiple CALayers.  
@@ -19,7 +19,7 @@ Supports different types of content:
 
 --
 
-###Usage
+### Usage
  1. Create delegate object -  
 `AnimationDelegate *animationDelegate = [[AnimationDelegate alloc] initWithSequenceType: directionType:];`  
 
@@ -35,9 +35,9 @@ Supports different types of content:
 
 Note: To remove jagged edges during flipping, set __Renders with edge antialiasing__ in the project plist to YES. This may decrease performance.  
 
-####Configurable Properties
+#### Configurable Properties
 
-#####Animation Delegate
+##### Animation Delegate
 
  - __repeatDelay__: Length of time to the next flip after the current flip completes (only for _auto interaction mode_)
  - __shadow__: Whether or not to display shadow
@@ -47,7 +47,7 @@ Note: To remove jagged edges during flipping, set __Renders with edge antialiasi
  - __perspectiveDepth__: Positive value for adjusting the perspective. Lower the value, greater the illusion of depth.
  - __nextDuration__: duration of the next flip animation
 
-#####FlipView
+##### FlipView
 
  - __textInset__: inset of text relative to the flip view, like border margin
  - __textOffset__: positioning of text relative to top left of the flip view
@@ -59,12 +59,12 @@ Note: To remove jagged edges during flipping, set __Renders with edge antialiasi
 
 --
 
-###Feature Backlog
+### Feature Backlog
 1. More flexible and readable way of rearranging layers
 2. Dynamically drawing layers only when they come into view
 3. More realistic and less expensive lighting (specular reflection would be cool)
 
-###Contributors  
+### Contributors  
 [xissburg](https://github.com/xissburg)  
 
 --
